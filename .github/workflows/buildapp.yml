@@ -128,7 +128,8 @@ jobs:
           cd ${{ github.workspace }}/main
           mv YouTube.ipa YouTube.zip
           unzip -q YouTube.zip
-          rm -rf Payload/YouTube.app/PlugIns
+          find Payload/YouTube.app -name "*.appex" -type d -exec rm -rf {} +
+          find Payload/YouTube.app -name "*Extension*" -type d -exec rm -rf {} +
           youtube_version=$(defaults read "$(pwd)/Payload/YouTube.app/Info" CFBundleVersion)
           echo "==> YouTube v$youtube_version downloaded!"
           sed -i '' "17s#.*#YOUTUBE_VERSION = ${youtube_version}#g" Makefile
